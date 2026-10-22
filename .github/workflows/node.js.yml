@@ -3,12 +3,25 @@ name: Test
 on:
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".gitignore"
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".gitignore"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         node-version: [20.x]
